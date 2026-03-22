@@ -2,6 +2,7 @@ import os
 import pytest
 from playwright.sync_api import sync_playwright
 from config.environments import BASE_URLS
+from utils.popup_handler import close_popup_if_exists
 
 
 def pytest_addoption(parser):
@@ -48,10 +49,13 @@ def context(browser):
 
 
 @pytest.fixture
-def page(context):
+def page(base_url,context):
     page = context.new_page()
     page.set_default_timeout(10000)
+    page.goto(base_url, wait_until="domcontentloaded")
+    close_popup_if_exists(page)
     yield page
+    page.close()
 
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item):
@@ -62,3 +66,4 @@ def pytest_runtest_makereport(item):
         page = item.funcargs.get("page")
         if page:
             page.screenshot(path=f"screenshots/{item.name}.png")
+

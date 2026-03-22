@@ -1,6 +1,19 @@
 from pages.home_page import HomePage
+from pages.about_page import AboutPage
+from pages.contact_page import ContactPage
 
 
-def test_open_homepage(page, base_url):
-    page.goto(base_url, wait_until="domcontentloaded")
-    assert page.title() != ""
+def test_navigation_to_about(page):
+    home = HomePage(page)
+    about = AboutPage(page)
+
+    home.go_to_about()
+    about.verify_loaded()
+
+
+def test_navigation_to_contact(page):
+    home = HomePage(page)
+    contact = ContactPage(page)
+
+    home.go_to_contact()
+    contact.verify_loaded()

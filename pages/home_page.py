@@ -1,11 +1,14 @@
 class HomePage:
 
-    def __init__(self, page, base_url):
+    def __init__(self, page):
         self.page = page
-        self.base_url = base_url
 
-    def open(self):
-        self.page.goto(self.base_url)
+        # Locators
+        self.about_link = page.get_by_role("link", name="אודות")
+        self.contact_link = page.get_by_role("link", name="צור קשר")
 
-    def click_contact(self):
-        self.page.locator("text=צור קשר").click()
+    def go_to_about(self):
+        self.about_link.click()
+
+    def go_to_contact(self):
+        self.contact_link.click()

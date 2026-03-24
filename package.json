@@ -1,0 +1,15 @@
+{
+  "name": "maccabiaesthetica",
+  "version": "1.0.0",
+  "description": "Automation framework for web testing using Playwright Test + TypeScript",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:test": "npx playwright test --project=test",
+    "test:prod": "npx playwright test --project=prod",
+    "report": "npx playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "typescript": "^5.8.0"
+  }
+}

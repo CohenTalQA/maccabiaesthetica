@@ -1,15 +1,14 @@
 # Maccabi Aesthetica - Automation Tests
 
-Automation framework for web testing using **Playwright + Pytest**.
+Automation framework for web testing using **Playwright Test + TypeScript**.
 Designed to support **multiple environments (test / prod)** and run in **CI/CD (AWS CodeBuild & CodePipeline)**.
 
 ---
 
 ## 🚀 Tech Stack
 
-* Python 3.12
-* Playwright
-* Pytest
+* TypeScript
+* Playwright Test
 * Page Object Model (POM)
 
 ---
@@ -18,12 +17,14 @@ Designed to support **multiple environments (test / prod)** and run in **CI/CD (
 
 ```
 .
-├── tests/              # Test cases
+├── tests/              # Test cases (.spec.ts)
 ├── pages/              # Page Object classes
+├── fixtures/           # Custom test fixtures
 ├── config/             # Environment configuration
-├── conftest.py         # Fixtures and setup
-├── requirements.txt
-├── pytest.ini
+├── utils/              # Utility functions
+├── playwright.config.ts
+├── package.json
+├── tsconfig.json
 └── README.md
 ```
 
@@ -40,48 +41,33 @@ cd maccabiaesthetica
 
 ---
 
-### 2. Create virtual environment
+### 2. Install dependencies
 
 ```bash
-python -m venv venv
-```
-
-### Activate (PowerShell):
-
-```powershell
- ```
-
----
-
-### 3. Install dependencies
-
-```bash
-pip install -r requirements.txt
-playwright install
+npm install
+npx playwright install
 ```
 
 ---
 
 ## ▶️ Running Tests
 
-
-## Run tests in test environment
-
-```bash
-
-pytest --env=test  
-
-## 
+### Run tests in test environment
 
 ```bash
+npm run test:test
+```
 
-pytest --env=prod
+### Run tests in prod environment
+
+```bash
+npm run test:prod
 ```
 
 ### Run all tests
 
 ```bash
-pytest -s
+npm test
 ```
 
 ---
@@ -89,7 +75,7 @@ pytest -s
 ### Run specific test
 
 ```bash
-pytest tests/test_homepage.py -s
+npx playwright test tests/test-homepage.spec.ts
 ```
 
 ---

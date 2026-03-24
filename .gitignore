@@ -1,18 +1,14 @@
-# Virtual environment
-venv/
+# Dependencies
+node_modules/
 
-# Python cache
-__pycache__/
-*.pyc
-
-# Pytest
-.pytest_cache/
+# Build output
+dist/
 
 # Playwright
 playwright-report/
 test-results/
 
-# Screenshots (אם תוסיף בהמשך)
+# Screenshots
 screenshots/
 
 # IDE

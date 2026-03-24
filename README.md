@@ -101,6 +101,22 @@ The framework supports multiple environments:
 * **test** → https://dev.maccabiaesthetica.co.il/
 * **prod** → https://www.maccabiaesthetica.co.il/
 
+Each environment can also provide its own test data under `config/environments.py`, for example login details and personal data.
+
+### Available fixtures from configuration
+
+* `env_name` → the selected environment name
+* `env_config` → the full environment configuration dictionary
+* `base_url` → `env_config["base_url"]`
+* `login_data` → `env_config["login"]`
+
+Example:
+
+```python
+def test_login_data_is_loaded(login_data):
+    assert login_data["id_number"]
+```
+
 ### Set environment (PowerShell)
 
 ```powershell

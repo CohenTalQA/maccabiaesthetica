@@ -12,3 +12,6 @@ class HomePage:
 
     def go_to_contact(self):
         self.contact_link.click()
+
+    def go_to_login(self):
+        self.page.get_by_role("button", name="התחבר/י").click()

@@ -1,7 +1,7 @@
 import os
 import pytest
 from playwright.sync_api import sync_playwright
-from config.environments import BASE_URLS
+from config.environments import get_environment_config
 from utils.popup_handler import close_popup_if_exists
 
 
@@ -16,9 +16,23 @@ def pytest_addoption(parser):
 
 
 @pytest.fixture(scope="session")
-def base_url(request):
-    env = request.config.getoption("--env")
-    return BASE_URLS[env]
+def env_name(request):
+    return request.config.getoption("--env") or os.getenv("ENV", "test")
+
+
+@pytest.fixture(scope="session")
+def env_config(env_name):
+    return get_environment_config(env_name)
+
+
+@pytest.fixture(scope="session")
+def base_url(env_config):
+    return env_config["base_url"]
+
+
+@pytest.fixture(scope="session")
+def login_data(env_config):
+    return env_config["login"]
 
 
 @pytest.fixture(scope="session")
@@ -29,10 +43,10 @@ def playwright_instance():
 
 @pytest.fixture(scope="session")
 def browser(playwright_instance):
-    headless = os.getenv("HEADLESS", "true").lower() == "true"
+    headless = os.getenv("HEADLESS", "false").lower() == "true"
     browser = playwright_instance.chromium.launch(
-        headless=False,
-        slow_mo=0
+        headless=headless,
+        slow_mo=500
     )
     yield browser
     browser.close()

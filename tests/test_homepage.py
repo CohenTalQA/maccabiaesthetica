@@ -17,3 +17,7 @@ def test_navigation_to_contact(page):
 
     home.go_to_contact()
     contact.verify_loaded()
+
+
+def test_login_to_account(page):
+    home = HomePage(page)

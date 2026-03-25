@@ -17,11 +17,12 @@ Designed to support **multiple environments (test / prod)** and run in **CI/CD (
 
 ```
 .
-├── tests/              # Test cases (.spec.ts)
-├── pages/              # Page Object classes
-├── fixtures/           # Custom test fixtures
-├── config/             # Environment configuration
-├── utils/              # Utility functions
+├── tests/                # Test cases (.spec.ts)
+├── pages/                # Page Object classes (BasePage, HomePage, LoginPage, AboutPage, ContactPage)
+├── fixtures/             # Custom test fixtures (loginData, page objects)
+├── config/               # Environment configuration (environments.ts)
+├── utils/                # Utility functions (popup-handler)
+├── screenshots/          # Test screenshots
 ├── playwright.config.ts
 ├── package.json
 ├── tsconfig.json
@@ -38,8 +39,6 @@ Designed to support **multiple environments (test / prod)** and run in **CI/CD (
 git clone <repo-url>
 cd maccabiaesthetica
 ```
-
----
 
 ### 2. Install dependencies
 
@@ -64,83 +63,121 @@ npm run test:test
 npm run test:prod
 ```
 
-### Run all tests
+### Run in headed mode (with browser UI)
 
 ```bash
-npm test
+npm run test:prod:headed
+npm run test:test:headed
 ```
 
----
+### Run specific test (e.g. login only)
 
-### Run specific test
+```bash
+npm run test:login:prod
+npm run test:login:test
+```
+
+### Run a specific test file
 
 ```bash
 npx playwright test tests/test-homepage.spec.ts
+```
+
+### Debug mode
+
+```bash
+npm run test:prod:debug
+```
+
+### Open last HTML report
+
+```bash
+npm run report
 ```
 
 ---
 
 ## 🌍 Environments
 
-The framework supports multiple environments:
+The framework supports multiple environments, configured in `config/environments.ts`:
 
 * **test** → https://dev.maccabiaesthetica.co.il/
 * **prod** → https://www.maccabiaesthetica.co.il/
 
-Each environment can also provide its own test data under `config/environments.py`, for example login details and personal data.
+Each environment provides its own test data (login details, personal info) defined in `config/environments.ts`.
 
-### Available fixtures from configuration
+The active project/environment is selected via the `--project` flag in `playwright.config.ts`.
 
-* `env_name` → the selected environment name
-* `env_config` → the full environment configuration dictionary
-* `base_url` → `env_config["base_url"]`
-* `login_data` → `env_config["login"]`
+### Available custom fixtures
 
-Example:
+* `envName` → the selected environment/project name
+* `loginData` → login details (`LoginData`) for the current environment
+* `homePage` → `HomePage` page object instance
+* `loginPage` → `LoginPage` page object instance
+* `aboutPage` → `AboutPage` page object instance
+* `contactPage` → `ContactPage` page object instance
 
-```python
-def test_login_data_is_loaded(login_data):
-    assert login_data["id_number"]
+Example usage in a test:
+
+```typescript
+import { test, expect } from "../fixtures";
+
+test("login_account_success", async ({ homePage, loginData, loginPage }) => {
+  await homePage.navigate();
+  await homePage.goToLogin();
+  await loginPage.login(loginData);
+});
 ```
 
-### Set environment (PowerShell)
+### Set environment via env variable (PowerShell)
 
 ```powershell
 $env:ENV="test"
-pytest -s
+npx playwright test
 ```
 
 ```powershell
 $env:ENV="prod"
-pytest -s
+npx playwright test
 ```
 
 ---
 
 ## 🧪 Example Test
 
-```python
-def test_open_homepage(page):
-    page.goto(BASE_URL)
-    assert page.title() != ""
+```typescript
+import { test, expect } from "../fixtures";
+
+test("navigation_to_about", async ({ homePage, aboutPage }) => {
+  await homePage.goToAbout();
+  await aboutPage.verifyLoaded();
+});
 ```
 
 ---
 
 ## 🧱 Page Object Example
 
-```python
-class HomePage:
+```typescript
+import { Page } from "@playwright/test";
+import { BasePage } from "./base-page";
 
-    def __init__(self, page):
-        self.page = page
-        self.contact_button = page.get_by_text("צור קשר")
+export class HomePage extends BasePage {
+  private readonly aboutLink = this.page.getByRole("link", { name: "אודות" });
+  private readonly contactLink = this.page.getByRole("link", { name: "צור קשר" });
 
-    def open(self):
-        self.page.goto(BASE_URL)
+  async navigate(): Promise<void> {
+    await super.navigate("/");
+  }
 
-    def click_contact(self):
-        self.contact_button.click()
+  async goToAbout(): Promise<void> {
+    await this.aboutLink.click();
+  }
+
+  async goToContact(): Promise<void> {
+    await this.contactLink.click();
+  }
+}
 ```
 
 ---
@@ -150,7 +187,7 @@ class HomePage:
 Generate locators and actions:
 
 ```bash
-playwright codegen https://dev.maccabiaesthetica.co.il/
+npm run codegen
 ```
 
 ---
@@ -165,18 +202,19 @@ The project is designed to run in AWS:
 Example build steps:
 
 ```bash
-pip install -r requirements.txt
-playwright install --with-deps
-pytest
+npm ci
+npx playwright install --with-deps
+npx playwright test --project=prod
 ```
 
 ---
 
 ## 🧠 Best Practices
 
-* Do not hardcode URLs - use `BASE_URL`
+* Do not hardcode URLs — use `baseURL` from the project config
 * Use Page Object Model for maintainability
 * Keep tests independent
+* Use custom fixtures for shared setup (page objects, login data)
 * Use environment variables for flexibility
 
 ---
@@ -184,7 +222,7 @@ pytest
 ## 📌 TODO
 
 * [ ] Add smoke test suite
-* [ ] Add reporting (pytest-html / Allure)
+* [ ] Add reporting (Allure / HTML)
 * [ ] Integrate with AWS CodePipeline
 * [ ] Add screenshots on failure
 * [ ] Add parallel execution

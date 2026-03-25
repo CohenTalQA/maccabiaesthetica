@@ -14,10 +14,9 @@ test("navigation_to_contact", async ({ homePage, contactPage }) => {
 });
 
 test("login_account_success", async ({ homePage, loginData, loginPage }) => {
-  await homePage.goToLogin()
-  await loginPage.fillCredentials(loginData);
-  await loginPage.requestOtp();
-  await loginPage.waitForOtpValue();
-  await loginPage.submitLogin();
-  await loginPage.verifyLoginSuccess(loginData);
+  await homePage.navigate();
+
+  await homePage.goToLogin();
+
+  await loginPage.login(loginData);
 });

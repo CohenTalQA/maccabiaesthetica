@@ -25,13 +25,7 @@ export const test = base.extend<CustomFixtures>({
     await use(config.login);
   },
 
-  homePage: async ({ page, baseURL }, use) => {
-    console.log("BASE URL:", baseURL);
-    await page.goto(baseURL!, {
-    waitUntil: "domcontentloaded",
-    timeout: 60000,
-  });
-    await closePopupIfExists(page);
+  homePage: async ({ page }, use) => {
     await use(new HomePage(page));
   },
 

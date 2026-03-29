@@ -4,7 +4,7 @@ import { LoginPage } from "../pages/login-page";
 import { HomePage } from "../pages/home-page";
 import { AboutPage } from "../pages/about-page";
 import { ContactPage } from "../pages/contact-page";
-import { closePopupIfExists } from "../utils/popup-handler";
+import { ProfilePage } from "../pages/profile-page";
 
 type CustomFixtures = {
   loginData: LoginData;
@@ -12,6 +12,7 @@ type CustomFixtures = {
   homePage: HomePage;
   aboutPage: AboutPage;
   contactPage: ContactPage;
+  profilePage: ProfilePage;
   envName: string;
 };
 
@@ -40,6 +41,10 @@ export const test = base.extend<CustomFixtures>({
   loginPage: async ({ page }, use) => {
     await use(new LoginPage(page));
   },
+
+  profilePage: async ({ page }, use) => {
+    await use(new ProfilePage(page));
+  }
 });
 
 export { expect };

@@ -8,7 +8,7 @@ export default defineConfig({
   projects: Object.entries(ENVIRONMENTS).map(([name, env]) => ({
     name,
     use: {
-      baseURL: env.base_url,
+      baseURL: env.baseUrl,
       envName: name,
       headless: process.env.HEADLESS === "false",
     },

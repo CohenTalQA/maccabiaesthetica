@@ -12,6 +12,9 @@
 
     "test:login:prod": "npx playwright test -g login_account --project=prod",
     "test:login:test": "npx playwright test -g login_account --project=test",
+    "test:login:prod:headed": "npx playwright test -g login_account --project=prod --headed",
+    "test:login:test:headed": "npx playwright test -g login_account --project=test --headed",
+    "test:profile:prod:headed": "npx playwright test -g profile-page --project=prod --headed",
 
     "codegen": "npx playwright codegen https://maccabiaesthetica.co.il/",
     "report": "npx playwright show-report"

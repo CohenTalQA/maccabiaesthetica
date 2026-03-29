@@ -17,19 +17,22 @@ export class LoginPage extends BasePage {
   async fillCredentials(loginData: LoginData): Promise<void> {
     await this.birthDateInput.click();
     await this.birthDateInput.press('Escape');
-    await this.birthDateInput.fill(loginData.birth_date);
-    await this.idInput.fill(loginData.id_number);
+    await this.birthDateInput.fill(loginData.birthDate);
+    await this.idInput.fill(loginData.idNumber);
     // timeout to ensure the inputs are registered before proceeding
+    await this.page.waitForTimeout(500);
   }
 
   async requestOtp(): Promise<void> {
     await this.submitButton.click();
+    // add timeout to wait for OTP input to appear
+    await this.page.waitForTimeout(1000);
     await expect(this.otpInput).toBeVisible();
   }
 
   async waitForOtpValue(): Promise<void> {
     await expect(this.otpInput).toHaveValue(/^\d{6}$/, {
-      timeout: 120000,
+      timeout: 200000,
     });
   }
 
@@ -37,10 +40,15 @@ export class LoginPage extends BasePage {
     await this.loginButton.click();
 
   }
+  async verifyLoginSuccess(loginData: LoginData): Promise<void> {
+    await expect(this.page.getByRole('link', { name: /הי,/ })).toBeVisible();
+  }
   async login(loginData: LoginData): Promise<void> {
     await this.fillCredentials(loginData);
     await this.requestOtp();
     await this.waitForOtpValue();
     await this.submitLogin();
+    
+
   }
 }

@@ -1,38 +1,39 @@
 export interface LoginData {
-  birth_date: string;
-  id_number: string;
-  verification_code: string;
-  first_name: string;
-  last_name: string;
-  phone_number: string;
+  birthDate: string;
+  idNumber: string;
+  verificationCode: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
 }
 
+
 export interface EnvironmentConfig {
-  base_url: string;
+  baseUrl: string;
   login: LoginData;
 }
 
 const ENVIRONMENTS: Record<string, EnvironmentConfig> = {
   test: {
-    base_url: "https://dev.maccabiaesthetica.co.il/",
+    baseUrl: "https://dev.maccabiaesthetica.co.il/",
     login: {
-      birth_date: "17/11/1988",
-      id_number: "200430833",
-      verification_code: "616616",
-      first_name: "טל",
-      last_name: "כהן",
-      phone_number: "0526740745",
+      birthDate: "17/11/1988",
+      idNumber: "200430833",
+      verificationCode: "616616",
+      firstName: "טל",
+      lastName: "כהן",
+      phoneNumber: "0526740745",
     },
   },
   prod: {
-    base_url: "https://www.maccabiaesthetica.co.il/",
+    baseUrl: "https://www.maccabiaesthetica.co.il/",
     login: {
-      birth_date: "17/11/1988",
-      id_number: "200430833",
-      verification_code: "616616",
-      first_name: "טל",
-      last_name: "כהן",
-      phone_number: "0526740745",
+      birthDate: "17/11/1988",
+      idNumber: "200430833",
+      verificationCode: "616616",
+      firstName: "טל",
+      lastName: "כהן",
+      phoneNumber: "0526740745",
     },
   },
 };

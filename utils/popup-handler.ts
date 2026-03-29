@@ -5,12 +5,9 @@ export async function closePopupIfExists(page: Page): Promise<void> {
   const closeButton = page.getByRole("button", { name: "סגירה" });
 
   try {
-    await popup.first().waitFor({ state: "visible", timeout: 3000 });
-
-    if ((await closeButton.count()) > 0) {
-      await closeButton.first().click();
-    }
+    await popup.waitFor({ state: "visible", timeout: 3000 });
+    await closeButton.click();
   } catch {
-    // popup not found, continue
+    // popup לא הופיע - ממשיכים
   }
 }

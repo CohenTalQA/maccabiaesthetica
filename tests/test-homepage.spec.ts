@@ -12,7 +12,9 @@ test("navigation_to_contact", async ({ homePage, contactPage }) => {
   await contactPage.verifyLoaded();
 });
 
-test.only("user profile flow - login and validate profile", async ({ homePage, loginData, loginPage, profilePage }) => {
+
+
+test("user profile flow - login and validate profile", async ({ homePage, loginData, loginPage, profilePage }) => {
   test.setTimeout(240_000);
   await homePage.navigate();
   await homePage.goToLogin();

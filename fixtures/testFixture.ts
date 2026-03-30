@@ -5,6 +5,8 @@ import { HomePage } from "../pages/home-page";
 import { AboutPage } from "../pages/about-page";
 import { ContactPage } from "../pages/contact-page";
 import { ProfilePage } from "../pages/profile-page";
+import { StorePage } from "../pages/store-page";
+import { CartPage } from "../pages/cart-page";
 
 type CustomFixtures = {
   loginData: LoginData;
@@ -13,6 +15,8 @@ type CustomFixtures = {
   aboutPage: AboutPage;
   contactPage: ContactPage;
   profilePage: ProfilePage;
+  cartPage: CartPage;
+  storePage: StorePage;
   envName: string;
 };
 
@@ -44,7 +48,17 @@ export const test = base.extend<CustomFixtures>({
 
   profilePage: async ({ page }, use) => {
     await use(new ProfilePage(page));
+  },
+  
+  cartPage: async ({ page }, use) => {
+    await use(new CartPage(page));
   }
+  ,
+  storePage: async ({ page }, use) => {
+    await use(new StorePage(page));
+  }
+
+
 });
 
 export { expect };

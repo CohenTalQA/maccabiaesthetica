@@ -1,13 +1,8 @@
-import { Page, expect } from "@playwright/test";
+import { expect } from "@playwright/test";
+import { BasePage } from "./base-page";
 
-export class ContactPage {
-  private readonly page: Page;
-  private readonly header;
-
-  constructor(page: Page) {
-    this.page = page;
-    this.header = page.getByRole("heading", { name: "צרו קשר" });
-  }
+export class ContactPage extends BasePage {
+  private readonly header = this.page.getByRole("heading", { name: "צרו קשר" });
 
   async verifyLoaded(): Promise<void> {
     await expect(this.header).toBeVisible();

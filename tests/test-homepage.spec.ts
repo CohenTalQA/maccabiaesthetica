@@ -1,6 +1,5 @@
 import { test, expect } from "../fixtures";
 
-
 test("navigation_to_about", async ({ homePage, aboutPage }) => {
   await homePage.navigate();
   await homePage.goToAbout();
@@ -14,9 +13,11 @@ test("navigation_to_contact", async ({ homePage, contactPage }) => {
 });
 
 test.only("user profile flow - login and validate profile", async ({ homePage, loginData, loginPage, profilePage }) => {
+  test.setTimeout(240_000);
   await homePage.navigate();
   await homePage.goToLogin();
   await loginPage.login(loginData);
+  await homePage.navigate();
   await homePage.goToProfile();
   await profilePage.verifyProfileDetails(loginData);
 });

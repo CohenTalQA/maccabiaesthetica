@@ -25,6 +25,10 @@ export class HomePage extends BasePage {
     await this.loginButton.click();
   }
 
+  async goToCart(): Promise<void> {
+    await this.page.getByRole("link", { name: "עגלת קניות" }).click();
+  }
+
   async goToProfile(): Promise<void> {
     await this.profileLink.click();
   }

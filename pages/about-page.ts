@@ -1,16 +1,11 @@
 import { Page, expect } from "@playwright/test";
+import { BasePage } from "./base-page";
 
-export class AboutPage {
-  private readonly page: Page;
-  private readonly header;
-
-  constructor(page: Page) {
-    this.page = page;
-    this.header = page.getByText("בית / אודות");
-  }
+export class AboutPage extends BasePage {
+  private readonly header = this.page.getByText("בית / אודות");
 
   async verifyLoaded(): Promise<void> {
-    expect(this.page.url()).toContain("/about");
+    await this.waitForUrl(/\/about/);
     await expect(this.header).toBeVisible();
   }
 }

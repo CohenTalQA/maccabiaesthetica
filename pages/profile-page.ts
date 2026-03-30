@@ -1,43 +1,39 @@
-import { Page, expect } from "@playwright/test";
+import { expect } from "@playwright/test";
+import { BasePage } from "./base-page";
 
-
-export class ProfilePage {
-  constructor(private page: Page) {}
-
+export class ProfilePage extends BasePage {
   private getValueByLabel(label: string) {
-  return this.page
-    .locator('li', { has: this.page.getByText(label) })
-    .locator('div')
-    .nth(1);
-}
-
-  private get userName() {
-    return this.getValueByLabel('שם פרטי');
+    return this.page
+      .locator("li", { has: this.page.getByText(label) })
+      .locator("div")
+      .nth(1);
   }
 
-private get userLastName() {
-  return this.getValueByLabel('שם משפחה');
-}
+  private get userName() {
+    return this.getValueByLabel("שם פרטי");
+  }
 
-private get idNumber() {
-  return this.getValueByLabel('ת.ז.');
-}
+  private get userLastName() {
+    return this.getValueByLabel("שם משפחה");
+  }
 
-private get phoneNumber() {
-  return this.getValueByLabel('טלפון');
-}
+  private get idNumber() {
+    return this.getValueByLabel("ת.ז.");
+  }
+
+  private get phoneNumber() {
+    return this.getValueByLabel("טלפון");
+  }
 
   async verifyProfileDetails(data: {
     firstName: string;
     lastName: string;
     idNumber: string;
     phoneNumber: string;
-  }) {
-    
-    await this.page.pause();
-    await expect(this.userName).toHaveText(data.firstName);
-    await expect(this.userLastName).toHaveText(data.lastName);
-    await expect(this.idNumber).toHaveText(data.idNumber);
-    await expect(this.phoneNumber).toHaveText(data.phoneNumber);
+  }): Promise<void> {
+    await expect.soft(this.userName, `שם פרטי: צפוי "${data.firstName}"`).toHaveText(data.firstName);
+    await expect.soft(this.userLastName, `שם משפחה: צפוי "${data.lastName}"`).toHaveText(data.lastName);
+    await expect.soft(this.idNumber, `ת.ז.: צפוי "${data.idNumber}"`).toHaveText(data.idNumber);
+    await expect.soft(this.phoneNumber, `טלפון: צפוי "${data.phoneNumber}"`).toHaveText(data.phoneNumber);
   }
 }
